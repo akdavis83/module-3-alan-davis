@@ -40,6 +40,15 @@
   <li><a href="#module-5-submission-guidelines">Submission Guidelines</a></li>
 </ol>
 </details>
+<details>
+<summary> <a href="#module-6-deploy-smart-contracts">Module 6: Deploy Smart Contracts</a></summary>
+<ol>
+  <li><a href="#module-6-overview">Overview</a></li>
+  <li><a href="#module-6-exercises">Exercises</a></li>
+  <li><a href="#module-6-running-scripts">Running Scripts</a></li>
+  <li><a href="#module-6-submission-guidelines">Submission Guidelines</a></li>
+</ol>
+</details>
 
 ---
 
@@ -835,6 +844,233 @@ npx hardhat compile
 - Review the [ConsenSys Smart Contract Best Practices](https://consensys.github.io/smart-contract-best-practices/)
 - Study the [OpenZeppelin Security Patterns](https://docs.openzeppelin.com/contracts/4.x/)
 - Review the [SWC Registry](https://swcregistry.io/) for vulnerability classifications
+- Ask in the course discussion forum
+- Reach out to the DevX team
+
+<p align="right">(<a href="#table-of-contents">back to top</a>) ⬆️</p>
+
+---
+
+# Module 6: Deploy Smart Contracts
+
+💡 **Learning Time**: 3-4 hours  
+📹 **Video Lessons**: Available on the platform  
+🎯 **Goal**: Master smart contract deployment with Hardhat and network configuration
+
+## Module 6 Overview
+
+In Module 6, you'll learn how to deploy smart contracts using Hardhat, configure multiple networks, and manage deployment scripts. This module teaches you deployment best practices essential for taking your smart contracts from development to production.
+
+### What You'll Learn
+
+By completing this module, you will be able to:
+- Write deployment scripts using Hardhat
+- Configure multiple networks (local, testnet, mainnet)
+- Manage environment variables securely
+- Deploy contracts with constructor parameters
+- Deploy multiple interdependent contracts
+- Save and manage deployment artifacts
+
+### Contracts You'll Deploy
+
+- **SimpleToken.sol**: A basic ERC20 token for deployment practice
+- **NFTMarketplace.sol**: A complex contract with dependencies
+- **PriceOracle.sol**: A contract for oracle functionality
+
+## Module 6 Exercises
+
+| # | Exercise | Topics Covered | Difficulty |
+|---|----------|----------------|------------|
+| 01 | [Basic Deployment](./module6/scripts/01-deploy-simple.ts) | `getContractFactory`, `deploy`, `waitForDeployment` | ⭐ |
+| 02 | [Deploy with Parameters](./module6/scripts/02-deploy-with-params.ts) | Constructor args, state verification | ⭐⭐ |
+| 03 | [Deploy Multiple Contracts](./module6/scripts/03-deploy-multiple.ts) | Dependencies, contract linking | ⭐⭐⭐ |
+| 04 | [Network Configuration](./module6/hardhat.config.ts) | RSK networks, accounts, gas settings | ⭐⭐ |
+
+## Module 6 Running Scripts
+
+### Install Dependencies
+```bash
+cd module6
+npm install
+```
+
+### Compile Contracts
+```bash
+npx hardhat compile
+```
+
+### Run Deployment Scripts
+```bash
+# Exercise 1: Basic deployment
+npx hardhat run scripts/01-deploy-simple.ts
+
+# Exercise 2: Deploy with parameters
+npx hardhat run scripts/02-deploy-with-params.ts
+
+# Exercise 3: Deploy multiple contracts
+npx hardhat run scripts/03-deploy-multiple.ts
+```
+
+### Deploy to RSK Testnet (Optional)
+```bash
+# First, get some tRBTC from the RSK Testnet Faucet: https://faucet.rsk.co/
+
+# Create .env file with your private key
+cp env.example .env
+# Edit .env and add your private key
+
+# Deploy to testnet
+npx hardhat run scripts/01-deploy-simple.ts --network rskTestnet
+```
+
+## How to Complete Module 6 Exercises
+
+### Step 1: Open the Script File
+
+Navigate to `module6/scripts/` and open the script file. You'll see code with TODOs:
+
+```typescript
+// Example from 01-deploy-simple.ts
+async function main() {
+    // TODO 1: Get the contract factory for SimpleToken
+    
+    // TODO 2: Deploy the contract with parameters
+    
+    // TODO 3: Wait for deployment and get address
+    
+    // TODO 4: Save deployment info to file
+}
+```
+
+### Step 2: Complete the TODOs
+
+Replace each TODO with the correct implementation:
+
+```typescript
+async function main() {
+    const SimpleToken = await ethers.getContractFactory("SimpleToken");
+    const token = await SimpleToken.deploy("SimpleToken", "STK", 1000000);
+    await token.waitForDeployment();
+    const address = await token.getAddress();
+    
+    // Save deployment info...
+}
+```
+
+### Step 3: Run Your Script
+
+Execute the script to verify it works:
+
+```bash
+npx hardhat run scripts/01-deploy-simple.ts
+```
+
+### Step 4: Check the Output
+
+Verify that:
+- ✅ Script runs without errors
+- ✅ Contract address is displayed
+- ✅ Deployment artifact is created in `deployments/`
+
+### Step 5: Move to the Next Exercise
+
+Once your script works correctly, move to the next exercise!
+
+## Module 6 Submission Guidelines
+
+### Before Submitting
+
+- ✅ All deployment scripts execute without errors
+- ✅ Deployment artifacts are created in `deployments/`
+- ✅ Network configuration is valid for RSK
+- ✅ Code follows best practices
+
+### Expected Output
+
+After completing all exercises, your `deployments/` folder should contain:
+
+```
+deployments/
+├── SimpleToken.json
+├── SimpleToken-custom.json
+└── all-contracts.json
+```
+
+### Submission Checklist
+
+```bash
+# 1. Create a branch following the naming convention: module6/your-username
+git checkout -b module6/your-username
+
+# 2. Run all scripts one final time
+cd module6
+npx hardhat run scripts/01-deploy-simple.ts
+npx hardhat run scripts/02-deploy-with-params.ts
+npx hardhat run scripts/03-deploy-multiple.ts
+
+# 3. Check for any uncommitted changes
+git status
+
+# 4. Commit your work
+git add module6/
+git commit -m "Complete Module 6: Smart Contract Deployment"
+
+# 5. Push to your fork
+git push origin module6/your-username
+
+# 6. Create Pull Request on GitHub to the parent repository
+# PR title must be: module6/your-username
+```
+
+**Remember**: Replace `your-username` with your course username or email address.
+
+### What We Check
+
+Your submission will be evaluated on:
+1. **Correctness**: All scripts execute successfully ✅
+2. **Completeness**: All exercises completed
+3. **Artifacts**: Deployment JSON files created correctly
+4. **Configuration**: Network configuration is valid
+5. **Best Practices**: Proper error handling and logging
+
+## Module 6 Troubleshooting
+
+### Scripts Won't Run
+
+```bash
+# Try reinstalling dependencies
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Compilation Errors
+
+```bash
+# Compile contracts first
+npx hardhat compile
+
+# Or clean and recompile
+npx hardhat clean
+npx hardhat compile
+```
+
+### Network Connection Issues
+
+- Verify your `.env` file has the correct RPC URLs
+- Check that the private key is valid (for testnet deployments)
+- Ensure you have tRBTC for gas (for testnet deployments)
+
+### Deployment Artifacts Not Created
+
+- Ensure you're using `fs.writeFileSync` correctly
+- Check that the `deployments/` directory exists or is created
+- Verify the JSON.stringify format is correct
+
+### Need More Help?
+
+- Check the [Hardhat Deployment Guide](https://hardhat.org/hardhat-runner/docs/guides/deploying)
+- Review [RSK Developer Portal](https://developers.rsk.co/)
+- Review the module-specific README: `module6/README.md`
 - Ask in the course discussion forum
 - Reach out to the DevX team
 
